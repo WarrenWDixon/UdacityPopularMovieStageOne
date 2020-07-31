@@ -32,13 +32,13 @@ public class ColorUtils {
     /**
      * This method returns the appropriate shade of green to form the gradient
      * seen in the list, based off of the order in which the
-     * {@link MovieAdapter.NumberViewHolder}
+     * {@link MovieAdapter.ImageViewHolder}
      * instance was created.
      *
      * This method is used to show how ViewHolders are recycled in a RecyclerView.
      * At first, the colors will form a nice, consistent gradient. As the
      * RecyclerView is scrolled, the
-     * {@link MovieAdapter.NumberViewHolder}'s will be
+     * {@link MovieAdapter.ImageViewHolder}'s will be
      * recycled and the list will no longer appear as a consistent gradient.
      *
      * @param context     Context for getting colors

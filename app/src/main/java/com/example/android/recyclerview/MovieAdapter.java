@@ -16,12 +16,14 @@
 package com.example.android.recyclerview;
 
 import android.content.Context;
+import android.media.Image;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
@@ -36,7 +38,7 @@ import android.widget.TextView;
  * If you don't like our puns, we named this Adapter GreenAdapter because its
  * contents are green.
  */
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHolder> {
+public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ImageViewHolder> {
 
     private static final String TAG = MovieAdapter.class.getSimpleName();
 
@@ -129,20 +131,21 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
      * @return A new NumberViewHolder that holds the View for each list item
      */
     @Override
-    public NumberViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ImageViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         Context context = viewGroup.getContext();
-        int layoutIdForListItem = R.layout.number_list_item;
+        int layoutIdForListItem = R.layout.image_list_item;
         LayoutInflater inflater = LayoutInflater.from(context);
         boolean shouldAttachToParentImmediately = false;
 
         View view = inflater.inflate(layoutIdForListItem, viewGroup, shouldAttachToParentImmediately);
-        NumberViewHolder viewHolder = new NumberViewHolder(view);
+        ImageViewHolder viewHolder = new ImageViewHolder(view);
 
-        viewHolder.viewHolderIndex.setText("ViewHolder index: " + viewHolderCount);
+        //viewHolder.viewHolderIndex.setText("ViewHolder index: " + viewHolderCount);
+        //viewHolder.mImageView.setImageResource(R.drawable.bj1);
 
-        int backgroundColorForViewHolder = ColorUtils
+        /* int backgroundColorForViewHolder = ColorUtils
                 .getViewHolderBackgroundColorFromInstance(context, viewHolderCount);
-        viewHolder.itemView.setBackgroundColor(backgroundColorForViewHolder);
+        viewHolder.itemView.setBackgroundColor(backgroundColorForViewHolder); */
 
         viewHolderCount++;
         Log.d(TAG, "onCreateViewHolder: number of ViewHolders created: "
@@ -161,7 +164,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
      * @param position The position of the item within the adapter's data set.
      */
     @Override
-    public void onBindViewHolder(NumberViewHolder holder, int position) {
+    public void onBindViewHolder(ImageViewHolder holder, int position) {
         Log.d(TAG, "#" + position);
         holder.bind(position);
     }
@@ -181,13 +184,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
     /**
      * Cache of the children views for a list item.
      */
-    class NumberViewHolder extends RecyclerView.ViewHolder
+    class ImageViewHolder extends RecyclerView.ViewHolder
         implements OnClickListener {
 
         // Will display the position in the list, ie 0 through getItemCount() - 1
-        TextView listItemNumberView;
+        //TextView listItemNumberView;
         // Will display which ViewHolder is displaying this data
-        TextView viewHolderIndex;
+        //TextView viewHolderIndex;
+        ImageView mImageView;
 
         /**
          * Constructor for our ViewHolder. Within this constructor, we get a reference to our
@@ -196,11 +200,12 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
          * @param itemView The View that you inflated in
          *                 {@link MovieAdapter#onCreateViewHolder(ViewGroup, int)}
          */
-        public NumberViewHolder(View itemView) {
+        public ImageViewHolder(View itemView) {
             super(itemView);
 
-            listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_number);
-            viewHolderIndex = (TextView) itemView.findViewById(R.id.tv_view_holder_instance);
+            //listItemNumberView = (TextView) itemView.findViewById(R.id.tv_item_number);
+            //viewHolderIndex = (TextView) itemView.findViewById(R.id.tv_view_holder_instance);
+            mImageView = (ImageView) itemView.findViewById(R.id.iv_poster);
             // COMPLETED (7) Call setOnClickListener on the View passed into the constructor (use 'this' as the OnClickListener)
             itemView.setOnClickListener(this);
         }
@@ -211,7 +216,27 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.NumberViewHo
          * @param listIndex Position of the item in the list
          */
         void bind(int listIndex) {
-            listItemNumberView.setText(String.valueOf(listIndex));
+            //listItemNumberView.setText(String.valueOf(listIndex));
+            int mod = listIndex % 4;
+
+            switch (mod) {
+                case 0:
+                    mImageView.setImageResource(R.drawable.bj1);
+                    break;
+                case 1:
+                    mImageView.setImageResource(R.drawable.bj2);
+                    break;
+                case 2:
+                    mImageView.setImageResource(R.drawable.bj6);
+                    break;
+                case 3:
+                    mImageView.setImageResource(R.drawable.bj5);
+                    break;
+                default:
+                    mImageView.setImageResource(R.drawable.bj2);
+                    break;
+            }
+            //mImageView.setImageResource(R.drawable.bj1);
         }
 
 
