@@ -218,24 +218,8 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ImageViewHol
         void bind(int listIndex) {
             //listItemNumberView.setText(String.valueOf(listIndex));
             int mod = listIndex % 4;
+            mImageView.setImageResource(R.drawable.img0428);
 
-            switch (mod) {
-                case 0:
-                    mImageView.setImageResource(R.drawable.bj1);
-                    break;
-                case 1:
-                    mImageView.setImageResource(R.drawable.bj2);
-                    break;
-                case 2:
-                    mImageView.setImageResource(R.drawable.bj6);
-                    break;
-                case 3:
-                    mImageView.setImageResource(R.drawable.bj5);
-                    break;
-                default:
-                    mImageView.setImageResource(R.drawable.bj2);
-                    break;
-            }
             //mImageView.setImageResource(R.drawable.bj1);
         }
 
