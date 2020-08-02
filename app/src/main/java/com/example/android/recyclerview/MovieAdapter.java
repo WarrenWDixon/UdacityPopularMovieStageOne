@@ -219,10 +219,20 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ImageViewHol
          */
         void bind(int listIndex) {
             //listItemNumberView.setText(String.valueOf(listIndex));
-            mImageView.setImageResource(R.drawable.img0428);
-            String path = "http://image.tmdb.org/t/p/w185/mb7wQv0adK3kjOUr9n93mANHhPJ.jpg";
-            Picasso.get().load(path).into(mImageView);
-            //mImageView.setImageResource(R.drawable.bj1);
+            //mImageView.setImageResource(R.drawable.img0428);
+            final String BASE_URL = "http://image.tmdb.org/t/p/w185";
+            String relativePath = new String();
+            String fullPath     = new String();
+            if (NetworkUtils.getNetworkConnected()) {
+                if (JsonUtil.getDataRead()) {
+                    relativePath = JsonUtil.getPosterPath(listIndex);
+                    fullPath = BASE_URL + relativePath;
+                    Picasso.get().load(fullPath).into(mImageView);
+                }
+            } else {
+                mImageView.setImageResource(R.drawable.img0428);
+            }
+            //String path = "http://image.tmdb.org/t/p/w185/mb7wQv0adK3kjOUr9n93mANHhPJ.jpg";
         }
 
 

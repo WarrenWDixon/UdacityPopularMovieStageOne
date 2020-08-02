@@ -85,27 +85,27 @@ public class JsonUtil {
             }
         }
     }
-    public boolean getDataRead() {
+    public static boolean getDataRead() {
         return dataRead;
     }
 
-    public String getTitle(int index) {
+    public static String getTitle(int index) {
         return titlesArray.get(index);
     }
 
-    public String getPopularity(int index) {
+    public static String getPopularity(int index) {
         return popularityArray.get(index);
     }
 
-    public String getOverview(int index) {
+    public static String getOverview(int index) {
         return overviewArray.get(index);
     }
 
-    public String getReleaseDate(int index) {
+    public static String getReleaseDate(int index) {
         return releaseDateArray.get(index);
     }
 
-    public String getPosterPath(int index) {
+    public static String getPosterPath(int index) {
         return posterPathArray.get(index);
     }
 }
