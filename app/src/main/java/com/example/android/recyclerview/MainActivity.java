@@ -33,7 +33,7 @@ import java.net.URL;
 public class MainActivity extends AppCompatActivity
         implements MovieAdapter.ListItemClickListener {
 
-    private static final int NUM_LIST_ITEMS = 100;
+    private static final int NUM_LIST_ITEMS = 20;
 
     /*
      * References to RecyclerView and Adapter to reset the list to its
@@ -110,8 +110,8 @@ public class MainActivity extends AppCompatActivity
             case R.id.action_popular:
             case R.id.action_top_rated:
                 // COMPLETED (14) Pass in this as the ListItemClickListener to the MovieAdapter constructor
-                mAdapter = new MovieAdapter(NUM_LIST_ITEMS, this);
-                mNumbersList.setAdapter(mAdapter);
+                //mAdapter = new MovieAdapter(NUM_LIST_ITEMS, this);
+                //mNumbersList.setAdapter(mAdapter);
                 makeMovieSearchQuery();
                 return true;
         }
@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity
                 // COMPLETED (17) Call showJsonDataView if we have valid, non-null results
                 Log.d("WWD", movieSearchResults);
                 JsonUtil.parseMovieJson(movieSearchResults);
+                mAdapter.notifyDataSetChanged();
             }
         }
 
