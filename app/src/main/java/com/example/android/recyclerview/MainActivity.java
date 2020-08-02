@@ -53,6 +53,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        makeMovieSearchQuery();
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         setContentView(R.layout.activity_main);
 
         /*
@@ -187,7 +193,7 @@ public class MainActivity extends AppCompatActivity
 
             if (movieSearchResults != null && !movieSearchResults.equals("")) {
                 // COMPLETED (17) Call showJsonDataView if we have valid, non-null results
-                Log.d("WWD", movieSearchResults);
+                Log.d("WWD", "got movie results");
                 JsonUtil.parseMovieJson(movieSearchResults);
                 mAdapter.notifyDataSetChanged();
             }
