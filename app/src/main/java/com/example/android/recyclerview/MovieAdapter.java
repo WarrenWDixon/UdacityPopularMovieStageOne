@@ -26,6 +26,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 /**
  * We couldn't come up with a good name for this class. Then, we realized
  * that this lesson is about RecyclerView.
@@ -217,9 +219,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ImageViewHol
          */
         void bind(int listIndex) {
             //listItemNumberView.setText(String.valueOf(listIndex));
-            int mod = listIndex % 4;
             mImageView.setImageResource(R.drawable.img0428);
-
+            String path = "http://image.tmdb.org/t/p/w185/mb7wQv0adK3kjOUr9n93mANHhPJ.jpg";
+            Picasso.get().load(path).into(mImageView);
             //mImageView.setImageResource(R.drawable.bj1);
         }
 

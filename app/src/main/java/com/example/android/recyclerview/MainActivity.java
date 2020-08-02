@@ -15,14 +15,19 @@
  */
 package com.example.android.recyclerview;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import java.io.IOException;
+import java.net.URL;
 
 // COMPLETED (8) Implement GreenAdapter.ListItemClickListener from the MainActivity
 public class MainActivity extends AppCompatActivity
@@ -102,10 +107,12 @@ public class MainActivity extends AppCompatActivity
              * ways of doing this, with this one being the simplest of those
              * ways. (in our humble opinion)
              */
-            case R.id.action_refresh:
-                // COMPLETED (14) Pass in this as the ListItemClickListener to the GreenAdapter constructor
+            case R.id.action_popular:
+            case R.id.action_top_rated:
+                // COMPLETED (14) Pass in this as the ListItemClickListener to the MovieAdapter constructor
                 mAdapter = new MovieAdapter(NUM_LIST_ITEMS, this);
                 mNumbersList.setAdapter(mAdapter);
+                makeMovieSearchQuery();
                 return true;
         }
 
@@ -148,4 +155,43 @@ public class MainActivity extends AppCompatActivity
 
         mToast.show();
     }
+
+    private void makeMovieSearchQuery() {
+        URL fetchMovieUrl = NetworkUtils.buildUrl();
+        new MovieQueryTask().execute(fetchMovieUrl);
+    }
+
+    public class MovieQueryTask extends AsyncTask<URL, Void, String> {
+
+        // COMPLETED (26) Override onPreExecute to set the loading indicator to visible
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            //mLoadingIndicator.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(URL... params) {
+            URL searchUrl = params[0];
+            String movieResults = null;
+            try {
+                movieResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return movieResults;
+        }
+
+        @Override
+        protected void onPostExecute(String movieSearchResults) {
+
+            if (movieSearchResults != null && !movieSearchResults.equals("")) {
+                // COMPLETED (17) Call showJsonDataView if we have valid, non-null results
+                Log.d("WWD", movieSearchResults);
+                JsonUtil.parseMovieJson(movieSearchResults);
+            }
+        }
+
+    }
+
 }

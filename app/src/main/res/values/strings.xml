@@ -16,4 +16,6 @@
 <resources>
     <string name="app_name">RecyclerView</string>
     <string name="action_reset">Reset</string>
+    <string name="popular">Popular</string>
+    <string name="top_rated">Top Rated</string>
 </resources>
