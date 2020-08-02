@@ -15,12 +15,16 @@ import java.util.Scanner;
  */
 public class NetworkUtils {
 
-    final static String MOVIE_FETCH_URL =
+    final static String POPULAR_MOVIE_URL =
             "https://api.themoviedb.org/3/movie/popular?api_key=44bb9f3b21602f274a1127bb251ab87d&language=en-US&page=1";
+
+    final static String TOPRATED_MOVIE_URL =
+            "https://api.themoviedb.org/3/movie/top_rated?api_key=44bb9f3b21602f274a1127bb251ab87d&language=en-US&page=1";
+
     private static boolean networkConnected;
 
-    public static URL buildUrl() {
-        Uri builtUri = Uri.parse(MOVIE_FETCH_URL).buildUpon()
+    public static URL buildPopularUrl() {
+        Uri builtUri = Uri.parse(POPULAR_MOVIE_URL).buildUpon()
                 .build();
 
         URL url = null;
@@ -33,15 +37,30 @@ public class NetworkUtils {
         return url;
     }
 
-    /**
-     * This method returns the entire result from the HTTP response.
-     *
-     * @param url The URL to fetch the HTTP response from.
-     * @return The contents of the HTTP response.
-     * @throws IOException Related to network and stream reading
-     */
+    public static URL buildTopRatedUrl() {
+        Uri builtUri = Uri.parse(TOPRATED_MOVIE_URL).buildUpon()
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return url;
+    }
+
+        /**
+         * This method returns the entire result from the HTTP response.
+         *
+         * @param url The URL to fetch the HTTP response from.
+         * @return The contents of the HTTP response.
+         * @throws IOException Related to network and stream reading
+         */
     public static String getResponseFromHttpUrl(URL url) throws IOException {
         HttpURLConnection urlConnection = (HttpURLConnection) url.openConnection();
+        Log.d("WWD", "in getResponseFromHttpUrl url is " + url);
         try {
             InputStream in = urlConnection.getInputStream();
             if (in == null) {

@@ -41,6 +41,10 @@ public class MainActivity extends AppCompatActivity
      */
     private MovieAdapter mAdapter;
     private RecyclerView mNumbersList;
+    enum SearchType {
+        PopularMovies,
+        TopRatedMovies
+    }
 
     // COMPLETED (9) Create a Toast variable called mToast to store the current Toast
     /*
@@ -53,7 +57,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        makeMovieSearchQuery();
+        makeMovieSearchQuery(SearchType.PopularMovies);
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
@@ -61,36 +65,13 @@ public class MainActivity extends AppCompatActivity
         }
         setContentView(R.layout.activity_main);
 
-        /*
-         * Using findViewById, we get a reference to our RecyclerView from xml. This allows us to
-         * do things like set the adapter of the RecyclerView and toggle the visibility.
-         */
+
         mNumbersList = (RecyclerView) findViewById(R.id.rv_numbers);
 
-        /*
-         * A LinearLayoutManager is responsible for measuring and positioning item views within a
-         * RecyclerView into a linear list. This means that it can produce either a horizontal or
-         * vertical list depending on which parameter you pass in to the LinearLayoutManager
-         * constructor. By default, if you don't specify an orientation, you get a vertical list.
-         * In our case, we want a vertical list, so we don't need to pass in an orientation flag to
-         * the LinearLayoutManager constructor.
-         *
-         * There are other LayoutManagers available to display your data in uniform grids,
-         * staggered grids, and more! See the developer documentation for more details.
-         */
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mNumbersList.setLayoutManager(layoutManager);
-
-        /*
-         * Use this setting to improve performance if you know that changes in content do not
-         * change the child layout size in the RecyclerView
-         */
         mNumbersList.setHasFixedSize(true);
 
-        // COMPLETED (13) Pass in this as the ListItemClickListener to the GreenAdapter constructor
-        /*
-         * The GreenAdapter is responsible for displaying each item in the list.
-         */
         mAdapter = new MovieAdapter(NUM_LIST_ITEMS, this);
         mNumbersList.setAdapter(mAdapter);
     }
@@ -103,22 +84,14 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         int itemId = item.getItemId();
-
+        Log.d("WWD", "In onOptionsItemSeelected");
         switch (itemId) {
-            /*
-             * When you click the reset menu item, we want to start all over
-             * and display the pretty gradient again. There are a few similar
-             * ways of doing this, with this one being the simplest of those
-             * ways. (in our humble opinion)
-             */
             case R.id.action_popular:
+                makeMovieSearchQuery(SearchType.PopularMovies);
+                return true;
             case R.id.action_top_rated:
-                // COMPLETED (14) Pass in this as the ListItemClickListener to the MovieAdapter constructor
-                //mAdapter = new MovieAdapter(NUM_LIST_ITEMS, this);
-                //mNumbersList.setAdapter(mAdapter);
-                makeMovieSearchQuery();
+                makeMovieSearchQuery(SearchType.TopRatedMovies);
                 return true;
         }
 
@@ -136,15 +109,6 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        // COMPLETED (11) In the beginning of the method, cancel the Toast if it isn't null
-        /*
-         * Even if a Toast isn't showing, it's okay to cancel it. Doing so
-         * ensures that our new Toast will show immediately, rather than
-         * being delayed while other pending Toasts are shown.
-         *
-         * Comment out these three lines, run the app, and click on a bunch of
-         * different items if you're not sure what I'm talking about.
-         */
         if (mToast != null) {
             mToast.cancel();
         }
@@ -162,14 +126,18 @@ public class MainActivity extends AppCompatActivity
         mToast.show();
     }
 
-    private void makeMovieSearchQuery() {
-        URL fetchMovieUrl = NetworkUtils.buildUrl();
+    private void makeMovieSearchQuery(SearchType type) {
+        Log.d("WWD", "in MovieSearchQuery");
+        URL fetchMovieUrl;
+        if (type == SearchType.PopularMovies)
+           fetchMovieUrl = NetworkUtils.buildPopularUrl();
+        else
+            fetchMovieUrl = NetworkUtils.buildTopRatedUrl();
         new MovieQueryTask().execute(fetchMovieUrl);
     }
 
     public class MovieQueryTask extends AsyncTask<URL, Void, String> {
 
-        // COMPLETED (26) Override onPreExecute to set the loading indicator to visible
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -180,6 +148,7 @@ public class MainActivity extends AppCompatActivity
         protected String doInBackground(URL... params) {
             URL searchUrl = params[0];
             String movieResults = null;
+            Log.d("WWD", "in doInBackground");
             try {
                 movieResults = NetworkUtils.getResponseFromHttpUrl(searchUrl);
             } catch (IOException e) {
@@ -190,9 +159,9 @@ public class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(String movieSearchResults) {
+            Log.d("WWD", "in onPostExecute");
 
             if (movieSearchResults != null && !movieSearchResults.equals("")) {
-                // COMPLETED (17) Call showJsonDataView if we have valid, non-null results
                 Log.d("WWD", "got movie results");
                 JsonUtil.parseMovieJson(movieSearchResults);
                 mAdapter.notifyDataSetChanged();

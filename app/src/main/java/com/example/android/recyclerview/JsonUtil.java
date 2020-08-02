@@ -52,6 +52,17 @@ public class JsonUtil {
         String posterPathString  = "";
         String releaseDateString = "";
 
+        if (!titlesArray.isEmpty())
+            titlesArray.clear();
+        if (!popularityArray.isEmpty())
+            popularityArray.clear();
+        if (!overviewArray.isEmpty())
+            overviewArray.clear();
+        if (!posterPathArray.isEmpty())
+            posterPathArray.clear();
+        if (!releaseDateArray.isEmpty())
+            releaseDateArray.clear();
+
         for (int i =0 ; i < len ;i++) {
             try {
                 JSONObject result = jsonResults.getJSONObject(i);
