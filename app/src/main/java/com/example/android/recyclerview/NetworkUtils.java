@@ -16,10 +16,10 @@ import java.util.Scanner;
 public class NetworkUtils {
 
     final static String POPULAR_MOVIE_URL =
-            "https://api.themoviedb.org/3/movie/popular?api_key=44bb9f3b21602f274a1127bb251ab87d&language=en-US&page=1";
+            "https://api.themoviedb.org/3/movie/popular?api_key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&language=en-US&page=1";
 
     final static String TOPRATED_MOVIE_URL =
-            "https://api.themoviedb.org/3/movie/top_rated?api_key=44bb9f3b21602f274a1127bb251ab87d&language=en-US&page=1";
+            "https://api.themoviedb.org/3/movie/top_rated?api_key=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&language=en-US&page=1";
 
     private static boolean networkConnected;
 
