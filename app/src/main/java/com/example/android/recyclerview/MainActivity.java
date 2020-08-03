@@ -15,11 +15,11 @@
  */
 package com.example.android.recyclerview;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity
      * "pretty" state when the reset menu item is clicked.
      */
     private MovieAdapter mAdapter;
-    private RecyclerView mNumbersList;
+    private RecyclerView mMoviesList;
     enum SearchType {
         PopularMovies,
         TopRatedMovies
@@ -66,14 +66,14 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-        mNumbersList = (RecyclerView) findViewById(R.id.rv_numbers);
+        mMoviesList = (RecyclerView) findViewById(R.id.rv_numbers);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
-        mNumbersList.setLayoutManager(layoutManager);
-        mNumbersList.setHasFixedSize(true);
+        mMoviesList.setLayoutManager(layoutManager);
+        mMoviesList.setHasFixedSize(true);
 
         mAdapter = new MovieAdapter(NUM_LIST_ITEMS, this);
-        mNumbersList.setAdapter(mAdapter);
+        mMoviesList.setAdapter(mAdapter);
     }
 
     @Override
@@ -109,21 +109,17 @@ public class MainActivity extends AppCompatActivity
      */
     @Override
     public void onListItemClick(int clickedItemIndex) {
-        if (mToast != null) {
+        /* if (mToast != null) {
             mToast.cancel();
         }
-
-        // COMPLETED (12) Show a Toast when an item is clicked, displaying that item number that was clicked
-        /*
-         * Create a Toast and store it in our Toast field.
-         * The Toast that shows up will have a message similar to the following:
-         *
-         *                     Item #42 clicked.
-         */
         String toastMessage = "Item #" + clickedItemIndex + " clicked.";
         mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
-        mToast.show();
+        mToast.show(); */
+        Intent myIntent = new Intent(this, DetailActivity.class);
+        myIntent.putExtra("intIndex", clickedItemIndex);
+        Log.d("WWD", "starting detail activity");
+        startActivity(myIntent);
     }
 
     private void makeMovieSearchQuery(SearchType type) {
