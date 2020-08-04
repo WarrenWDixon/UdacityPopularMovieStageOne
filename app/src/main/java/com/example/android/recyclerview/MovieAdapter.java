@@ -142,8 +142,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ImageViewHol
                     fullPath = BASE_URL + relativePath;
                     Picasso.get().load(fullPath).into(mImageView);
                 }
-            } else {
-                mImageView.setImageResource(R.drawable.img0428);
             }
         }
 

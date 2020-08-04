@@ -18,4 +18,5 @@
     <string name="action_reset">Reset</string>
     <string name="popular">Popular</string>
     <string name="top_rated">Top Rated</string>
+    <string name="error_message">NO INTERNET CONNECTION!</string>
 </resources>

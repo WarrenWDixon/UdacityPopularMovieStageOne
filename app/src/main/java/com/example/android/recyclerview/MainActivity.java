@@ -24,6 +24,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -41,6 +43,8 @@ public class MainActivity extends AppCompatActivity
      */
     private MovieAdapter mAdapter;
     private RecyclerView mMoviesList;
+    private TextView mErrorMessage;
+
     enum SearchType {
         PopularMovies,
         TopRatedMovies
@@ -66,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
 
 
-        mMoviesList = (RecyclerView) findViewById(R.id.rv_numbers);
+        mMoviesList = (RecyclerView) findViewById(R.id.rv_movies);
 
         GridLayoutManager layoutManager = new GridLayoutManager(this, 2);
         mMoviesList.setLayoutManager(layoutManager);
@@ -85,7 +89,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
-        Log.d("WWD", "In onOptionsItemSeelected");
+        Log.d("WWD", "In onOptionsItemSelected");
         switch (itemId) {
             case R.id.action_popular:
                 makeMovieSearchQuery(SearchType.PopularMovies);
@@ -116,10 +120,12 @@ public class MainActivity extends AppCompatActivity
         mToast = Toast.makeText(this, toastMessage, Toast.LENGTH_LONG);
 
         mToast.show(); */
-        Intent myIntent = new Intent(this, DetailActivity.class);
-        myIntent.putExtra("intIndex", clickedItemIndex);
-        Log.d("WWD", "starting detail activity");
-        startActivity(myIntent);
+        if (NetworkUtils.getNetworkConnected()) {
+            Intent myIntent = new Intent(this, DetailActivity.class);
+            myIntent.putExtra("intIndex", clickedItemIndex);
+            Log.d("WWD", "starting detail activity");
+            startActivity(myIntent);
+        }
     }
 
     private void makeMovieSearchQuery(SearchType type) {
@@ -153,14 +159,35 @@ public class MainActivity extends AppCompatActivity
             return movieResults;
         }
 
+        public void showRecyclerView() {
+            mMoviesList = (RecyclerView) findViewById(R.id.rv_movies);
+            mMoviesList.setVisibility(View.VISIBLE);
+
+            mErrorMessage = (TextView) findViewById(R.id.tv_error_message);
+            mErrorMessage.setVisibility(View.INVISIBLE);
+        }
+
+        public void showErrorMessage() {
+            mMoviesList = (RecyclerView) findViewById(R.id.rv_movies);
+            mMoviesList.setVisibility(View.INVISIBLE);
+
+            mErrorMessage = (TextView) findViewById(R.id.tv_error_message);
+            mErrorMessage.setVisibility(View.VISIBLE);
+        }
+
+
         @Override
         protected void onPostExecute(String movieSearchResults) {
             Log.d("WWD", "in onPostExecute");
-
-            if (movieSearchResults != null && !movieSearchResults.equals("")) {
-                Log.d("WWD", "got movie results");
-                JsonUtil.parseMovieJson(movieSearchResults);
-                mAdapter.notifyDataSetChanged();
+            if (NetworkUtils.getNetworkConnected()) {
+                showRecyclerView();
+                if (movieSearchResults != null && !movieSearchResults.equals("")) {
+                    Log.d("WWD", "got movie results");
+                    JsonUtil.parseMovieJson(movieSearchResults);
+                    mAdapter.notifyDataSetChanged();
+                }
+            } else {
+                showErrorMessage();
             }
         }
 
